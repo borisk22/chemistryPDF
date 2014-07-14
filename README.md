@@ -1,1 +1,1 @@
-In short I will put example of usage.
+I will put example of usage.
