@@ -1,11 +1,11 @@
 chemistryPDF
 ============
-
+/*
 Simple bridge between Apache PDFBox and classes or ORm model, which instances we wont to print on pdf. Ideal to put Hibernate model objects, or object of any instance to pdf. 
 
 Example:
 1. define bridge class, TorCmrCmnRun is OR model class
-
+*/
 package com.tockacrta.trailOer.reports.model;
 
 import com.tccrt.chemistryPdf.model.Atom;
@@ -32,7 +32,7 @@ public class TorCmrCmnRunAtom extends Atom<TorCmrCmnRun> {
 	
 	
 }
-
+/*
 2. In your app,define usage of PDDOcumentImpl (I use spring so I will gove you spring xml config example)
 - define copmund and document factoriy
 
@@ -60,9 +60,11 @@ public class TorCmrCmnRunAtom extends Atom<TorCmrCmnRun> {
     		</map>
     	</property>
     </bean>
-    
-3. use it in your coode (get documentFactory from spring context first, example is defined outside)
+*/
 
+/*
+3. use it in your coode (get documentFactory from spring context first, example is defined outside)
+*/
     BaseDocument startList= documentFactory.getDocument("startList");
 		Compound startListCompund= (Compound) startList.getChemistry().get("startListCompund");  	
 		//
