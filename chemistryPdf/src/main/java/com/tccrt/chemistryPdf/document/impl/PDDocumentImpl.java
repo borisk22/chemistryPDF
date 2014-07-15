@@ -27,8 +27,7 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 
 	private PDDocument pdDocument;		
 	private PDPage page;
-	//
-	
+
 	//
 	private HashMap<FlavorTypes, Object> defaultFlavors;
 	//
