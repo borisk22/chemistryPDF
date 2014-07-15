@@ -2,6 +2,7 @@ package com.tccrt.chemistryPdf.document.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
@@ -15,6 +16,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import com.tccrt.chemistryPdf.document.BaseDocument;
 import com.tccrt.chemistryPdf.model.Chemistry;
 import com.tccrt.chemistryPdf.model.Compound;
+import com.tccrt.chemistryPdf.model.Laboratory;
 
 /**
  * Apache PDFBox implementation of chemistryPDF document.
@@ -26,12 +28,9 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 	private PDDocument pdDocument;		
 	private PDPage page;
 	//
-	private String fileName;
-	private String fileLocation;
-	//
 	
 	//
-	PDFont font = PDType1Font.HELVETICA_BOLD; // TODO this will go in Atom class
+	private HashMap<FlavorTypes, Object> defaultFlavors;
 	//
 	private PDPageContentStream contentStream;
 	
@@ -40,10 +39,8 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 			loadTemplate();
 			page=(PDPage) pdDocument.getDocumentCatalog().getAllPages().get(0);
 		} else {
-			COSDictionary pageDic=new COSDictionary();
-			pageDic.setItem(COSName.SIZE, PDPage.PAGE_SIZE_A4);
 			pdDocument = new PDDocument();
-			page = new PDPage(pageDic);
+			page = new PDPage( PDPage.PAGE_SIZE_A4);
 			pdDocument.addPage( page );
 		}
 		try {
@@ -59,7 +56,10 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 			if (radical) {
 				contentStream.beginText();
 			}
-			contentStream.setFont( font, 12 ); // TODO property in atom
+			// TODO consider loop trough whole list of flavors, defaults are problem
+			PDFont font=(PDFont)atom.getFlavor(FlavorTypes.FontStyle, defaultFlavors.get(FlavorTypes.FontStyle)); //we don't want that atom has only just one default, it si possible that we draw same atom on other document with other flavor
+			float size =(float) atom.getFlavor(FlavorTypes.FontSize, defaultFlavors.get(FlavorTypes.FontSize));
+			contentStream.setFont(font, size);  // TODO consider sending whole hash map // we don't want that atom has only just one default, TODO consider sending whole hash map
 			contentStream.moveTextPositionByAmount(atom.getX(), atom.getY());
 			contentStream.drawString((String) atom.getFormated());  // TODO only text atoms for now	
 			if (radical && !(atom instanceof Compound)) {
@@ -129,20 +129,25 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 		}
 	}
 
-	public String getFileName() {
-		return fileName;
+	
+	@Override
+	public void setChemistry(HashMap<String, Chemistry> chemistry) {
+		this.chemistry=chemistry;		
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	@Override
+	public HashMap<String, Chemistry> getChemistry() {
+		return this.chemistry;
 	}
 
-	public String getFileLocation() {
-		return fileLocation;
+	@Override
+	public HashMap<FlavorTypes, Object> getDefaultFlavors() {
+		return defaultFlavors;
 	}
 
-	public void setFileLocation(String fileLocation) {
-		this.fileLocation = fileLocation;
+	@Override
+	public void setDefaultFlavors(HashMap<FlavorTypes, Object> defaultFlavors) {
+		this.defaultFlavors = defaultFlavors;
 	}
 
 }

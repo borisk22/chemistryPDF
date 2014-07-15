@@ -18,6 +18,10 @@ public class Compound extends StringAtom {
 		format=null; 
 	}
 	
+	public void clear() {
+		this.ingredients.clear();
+	}
+	
 	public void add(Chemistry chemistry) {
 		this.ingredients.add(chemistry);
 	}

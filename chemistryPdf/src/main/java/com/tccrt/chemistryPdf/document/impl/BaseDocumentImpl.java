@@ -1,7 +1,5 @@
 package com.tccrt.chemistryPdf.document.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import com.tccrt.chemistryPdf.document.BaseDocument;
@@ -9,8 +7,9 @@ import com.tccrt.chemistryPdf.model.Chemistry;
 
 public abstract class BaseDocumentImpl implements BaseDocument {
 	protected String template;
-	private String fileName;
-	private String fileLocation;
+	protected String fileName;
+	protected String fileLocation;	
+	
 	protected HashMap<String, Chemistry> chemistry=new HashMap<String, Chemistry>();
 
 	public String getTemplate() {
@@ -37,14 +36,5 @@ public abstract class BaseDocumentImpl implements BaseDocument {
 		this.fileLocation = fileLocation;
 	}
 	
-	@Override
-	public void setChemistry(HashMap<String, Chemistry> chemistry) {
-		this.chemistry=chemistry;		
-	}
-
-	@Override
-	public HashMap<String, Chemistry> getChemistry() {
-		return this.chemistry;
-	}
 
 }
