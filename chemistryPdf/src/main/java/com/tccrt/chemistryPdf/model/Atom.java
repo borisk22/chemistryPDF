@@ -25,12 +25,17 @@ public abstract class Atom<T> extends Chemistry {
 	
 	public Object getFormated() {
 		if (formated==null) {			
-			if (format!=null && value!=null) { 
-				formated=formatOutput(format, value);
-				return formated;
+			if (format!=null) {
+				if (value!=null) {
+					formated=formatOutput(format, value);				
+					return formated;
+				}
+				return null;
+			} else {
+				formated=value.toString(); 
 			}
-		}
-		return value;
+		} 
+		return formated;	
 	}
 		
 	protected abstract Object formatOutput(String format, T value);
