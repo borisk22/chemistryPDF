@@ -2,8 +2,6 @@ package com.tccrt.chemistryPdf.model;
 
 import java.util.HashMap;
 
-import javax.annotation.Resource;
-
 /**
  * Basic interface for documents which will render chemistry objects
  * @author boris

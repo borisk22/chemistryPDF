@@ -4,19 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.apache.pdfbox.cos.COSDictionary;
-import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
 import com.tccrt.chemistryPdf.document.BaseDocument;
 import com.tccrt.chemistryPdf.model.Chemistry;
 import com.tccrt.chemistryPdf.model.Compound;
-import com.tccrt.chemistryPdf.model.Laboratory;
 
 /**
  * Apache PDFBox implementation of chemistryPDF document.
@@ -141,7 +136,7 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 	public void loadTemplate() {
 		File templatePDF=new File(template);
 		try {
-			pdDocument=pdDocument.load(templatePDF);
+			pdDocument=PDDocument.load(templatePDF);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
