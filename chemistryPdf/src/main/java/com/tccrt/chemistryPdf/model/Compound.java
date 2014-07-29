@@ -13,6 +13,11 @@ public class Compound extends StringAtom {
 	private List<Chemistry> ingredients=new ArrayList<Chemistry>();
 
 	
+	public Compound() { // Header text
+		super(null);
+		format=null; 
+	}
+	
 	public Compound(String value) { // Header text
 		super(value);
 		format=null; 

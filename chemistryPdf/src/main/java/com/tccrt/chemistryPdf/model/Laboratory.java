@@ -10,7 +10,7 @@ import javax.annotation.Resource;
  *
  */
 public interface Laboratory {
-	public  enum FlavorTypes {FontSize, FontStyle};
+	public  enum FlavorTypes {FontSize, FontStyle, PageMarginBottom};
 	void spill();
 	HashMap<String, Chemistry> getChemistry();
 	void setChemistry(HashMap<String, Chemistry> chemistry);

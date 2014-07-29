@@ -27,6 +27,9 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 
 	private PDDocument pdDocument;		
 	private PDPage page;
+	private Float bottomMargin=30F; 
+	private Float absY=0F;
+	private Integer currentPage=0;
 
 	//
 	private HashMap<FlavorTypes, Object> defaultFlavors;
@@ -36,17 +39,45 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 	public void init() {
 		if (template!=null) {
 			loadTemplate();
-			page=(PDPage) pdDocument.getDocumentCatalog().getAllPages().get(0);
+			page=(PDPage) pdDocument.getDocumentCatalog().getAllPages().get(0);			
 		} else {
 			pdDocument = new PDDocument();
-			page = new PDPage( PDPage.PAGE_SIZE_A4);
+			page = new PDPage( PDPage.PAGE_SIZE_A4);  // TODO page size to flavor
 			pdDocument.addPage( page );
+		}
+		if (defaultFlavors.containsKey(FlavorTypes.PageMarginBottom)) {
+			bottomMargin=(Float) defaultFlavors.get(FlavorTypes.PageMarginBottom);
 		}
 		try {
 			contentStream = new PDPageContentStream(pdDocument, page);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();		
+		}
+	}
+	
+	// TODO find better solution, think once more, this is practical just for spilling
+	protected void checkPageEnd( Chemistry compund) {
+		if (absY<bottomMargin) {
+			stopSpilling();			
+			absY=compund.getY();
+			
+			if (currentPage<pdDocument.getDocumentCatalog().getAllPages().size()) {
+				page = new PDPage( PDPage.PAGE_SIZE_A4);
+				pdDocument.addPage( page );
+				currentPage++;
+			} else {
+				currentPage++;
+				page=(PDPage) pdDocument.getDocumentCatalog().getAllPages().get(currentPage);
+			}
+			try {
+				contentStream.close();				
+				contentStream = new PDPageContentStream(pdDocument, page);
+				contentStream.beginText();				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();		
+			}
 		}
 	}
 
@@ -73,6 +104,7 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 	protected void stopSpilling() {
 		try {
 			contentStream.endText();
+			absY=0F; // TODO set to TOP of the page not BOTTOM
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,7 +117,11 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 			spillInternal(what, what.getAbsPositioning());
 			if (what instanceof Compound) {
 				Compound compund=(Compound)what;
-				for (Chemistry chemistry : compund.getIngredients()) {
+				absY=compund.getY();
+				currentPage=0;
+				for (Chemistry chemistry : compund.getIngredients()) {				
+					absY+=chemistry.getY();
+					checkPageEnd(compund);
 					spillInternal(chemistry, false);  // absolute positioning ignored
 				}
 				stopSpilling();
