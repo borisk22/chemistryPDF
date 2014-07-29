@@ -86,7 +86,9 @@ public class PDDocumentImpl extends BaseDocumentImpl implements BaseDocument {
 			float size =(float) atom.getFlavor(FlavorTypes.FontSize, defaultFlavors.get(FlavorTypes.FontSize));
 			contentStream.setFont(font, size);  // TODO consider sending whole hash map // we don't want that atom has only just one default, TODO consider sending whole hash map
 			contentStream.moveTextPositionByAmount(atom.getX(), atom.getY());
-			contentStream.drawString((String) atom.getFormated());  // TODO only text atoms for now	
+			if (atom.getFormated()!=null) {
+				contentStream.drawString((String) atom.getFormated());  // TODO only text capable atoms for now	
+			}
 			if (radical && !(atom instanceof Compound)) {
 				contentStream.endText();
 			}
