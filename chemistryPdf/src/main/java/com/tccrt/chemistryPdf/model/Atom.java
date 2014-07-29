@@ -15,6 +15,8 @@ public abstract class Atom<T> extends Chemistry {
 		super();
 		this.value = value;
 		this.formated=null; // is to be calculated
+		setX(0f);
+		setY(0f);
 	}
 
 	public T getValue() {

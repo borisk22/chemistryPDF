@@ -29,6 +29,7 @@ public class Compound extends StringAtom {
 	
 	public void add(Chemistry chemistry) {
 		this.ingredients.add(chemistry);
+		// TODO auto positioning, Compound needs more props, like direction, orientation, offsett etc. 
 	}
 	
 	public List<Chemistry> getIngredients() {
