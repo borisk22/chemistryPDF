@@ -22,8 +22,8 @@ public abstract class Atom<T> extends Chemistry {
 	}
 	
 	public Object getFormated() {
-		if (formated==null) {
-			if (format!=null) {
+		if (formated==null) {			
+			if (format!=null && value!=null) { 
 				formated=formatOutput(format, value);
 				return formated;
 			}
